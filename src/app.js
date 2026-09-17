@@ -1,30 +1,31 @@
-import express from "express";
-import env from "./config/env.js";
-import { root } from "./utils.js";
-import { fork } from "child_process";
+import express from 'express';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import { environment } from './config/config.js';
+import usersRouter from './routes/users.router.js';
+import petsRouter from './routes/pets.router.js';
+import adoptionsRouter from './routes/adoption.router.js';
+import sessionsRouter from './routes/sessions.router.js';
+
 const app = express();
+const PORT = environment.PORT;
 
-// console.log(process.pid);
-// console.log(process.cwd());
-// console.log(process.memoryUsage());
-// console.log(process.argv);
-// console.log(process.emit());
-// console.log(process.on());
+app.use(express.json());
+app.use(cookieParser());
 
-app.get('/operacion-compleja', async (req, res) => {
-    const child = fork(root + "/operacionCompleja.js");
-    child.send("comenzar calculo bloqueante");
-    child.on("message", result => {
-        console.log(result);
-        res.json(result);
-    });
-});
+app.use('/api/users', usersRouter);
+app.use('/api/pets', petsRouter);
+app.use('/api/adoptions', adoptionsRouter);
+app.use('/api/sessions', sessionsRouter);
 
-app.get('/saludo', async (req, res) => {
-    res.send('hola')
-});
+app.listen(PORT, () => {
 
-
-app.listen(env.port, () => {
-    console.log(`Server running on port ${env.port}`);
+    console.log(`Listening on ${PORT}`);
+    mongoose.connect(environment.MONGO_UR)
+        .then(() => console.log("conectado a DB"))
+        .catch(err => {
+            process.exitCode = 1;
+            console.log(err.message, process.exitCode);
+            process.exit();
+        });
 });
