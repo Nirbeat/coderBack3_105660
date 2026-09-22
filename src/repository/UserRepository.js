@@ -12,5 +12,4 @@ export default class UserRepository extends GenericRepository{
     getUserById = (id) =>{
         return this.getBy({_id:id})
     }
-    
 }

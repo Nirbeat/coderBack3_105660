@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import errorHandler from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import { environment } from './config/config.js';
 import usersRouter from './routes/users.router.js';
@@ -17,15 +18,18 @@ app.use('/api/users', usersRouter);
 app.use('/api/pets', petsRouter);
 app.use('/api/adoptions', adoptionsRouter);
 app.use('/api/sessions', sessionsRouter);
+app.use('/api/mocks', (await import('./routes/mocks.router.js')).default);
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
-
-    console.log(`Listening on ${PORT}`);
-    mongoose.connect(environment.MONGO_UR)
-        .then(() => console.log("conectado a DB"))
-        .catch(err => {
-            process.exitCode = 1;
-            console.log(err.message, process.exitCode);
-            process.exit();
-        });
+  console.log(`Listening on ${PORT}`);
+  mongoose
+    .connect(environment.MONGO_URI)
+    .then(() => console.log('conectado a DB'))
+    .catch((err) => {
+      process.exitCode = 1;
+      console.log(err.message, process.exitCode);
+      process.exit();
+    });
 });
