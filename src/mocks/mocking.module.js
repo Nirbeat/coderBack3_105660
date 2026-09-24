@@ -1,10 +1,12 @@
 import { faker } from '@faker-js/faker';
-import { createHash } from '../utils/index.js';
 
 const PET_SPECIES = ['dog', 'cat', 'bird', 'fish', 'hamster'];
 
+let emailSequence = 0;
+
 const generateUniqueEmail = (firstName, lastName) => {
-  return `${firstName.toLowerCase()}.${lastName.toLowerCase()}@mail.com`;
+  emailSequence += 1;
+  return `${firstName.toLowerCase()}.${lastName.toLowerCase()}${emailSequence}@mail.com`;
 };
 
 export const generateUser = () => {

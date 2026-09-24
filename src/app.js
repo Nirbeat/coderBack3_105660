@@ -19,6 +19,8 @@ app.use('/api/pets', petsRouter);
 app.use('/api/adoptions', adoptionsRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/mocks', (await import('./routes/mocks.router.js')).default);
+app.use('/api/proxy', (await import('./routes/proxy.router.js')).default);
+app.use('/api/balancing', (await import('./routes/balancing.router.js')).default);
 
 app.use(errorHandler);
 

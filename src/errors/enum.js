@@ -5,7 +5,8 @@ const ErrorsEnum = {
   NOT_FOUND_ERROR: 4,
   AUTHENTICATION_ERROR: 5,
   AUTHORIZATION_ERROR: 6,
-  INTERNAL_SERVER_ERROR: 7
-}
+  INTERNAL_SERVER_ERROR: 7,
+  TIMEOUT_ERROR: 8,
+};
 
 export default ErrorsEnum;
