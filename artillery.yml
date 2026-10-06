@@ -6,41 +6,35 @@ config:
 
 scenarios:                          # ESCENARIOS DE PRUEBA
   - name: "Registro y login de usuarios"
-    flow:                           #ACA EMPIEZA EL FLUJO DE PRUEBA
+    flow:                           # ACA EMPIEZA EL FLUJO DE PRUEBA
       - log: "Creando usuario con faker"
       - get:
           url: "/api/mocks/mock-user"
           capture:
-              - json: "$.user"
-                as: "user"
-            # - json: "$.first_name"
-            #   as: "nombre"
-            # - json: "$.user.last_name"
-            #   as: "apellido"
-            # - json: "$.user.role"
-            #   as: "rol"
-            # - json: "$.user.email"
-            #   as: "email"
-            # - json: "$.user.password"
-            #   as: "password"
-            # - json: "$.user.pets"
-            #   as: "mascotas"
-            
+            - json: "$.user.first_name"
+              as: "first_name"
+            - json: "$.user.last_name"
+              as: "last_name"
+            - json: "$.user.email"
+              as: "email"
+            - json: "$.user.password"
+              as: "password"
+            - json: "$.user.role"
+              as: "role"
+
       - log: "Guardando usuario en DB"
       - post:
           url: "/api/sessions/register"
           json:
-            first_name: {{user.first_name}}
-            last_name: {{user.last_name}}
-            role: {{user.role}}
-            email: {{user.email}}
-            password: {{user.password}}
-            pets: {{user.pets}}
-      - think: 2 #ESPERAMOS 2 SEGUNDOS
+            first_name: "{{ first_name }}"
+            last_name: "{{ last_name }}"
+            email: "{{ email }}"
+            password: "{{ password }}"
+      - think: 2 # ESPERAMOS 2 SEGUNDOS
 
       - log: "Logueando usuario"
       - post:
           url: "/api/sessions/login"
           json:
-            email: {{user.email}}
-            password: {{user.password}}
+            email: "{{ email }}"
+            password: "{{ password }}"
