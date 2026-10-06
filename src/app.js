@@ -24,11 +24,10 @@ app.use('/api/mocks', (await import('./routes/mocks.router.js')).default);
 app.use('/api/proxy', (await import('./routes/proxy.router.js')).default);
 app.use('/api/balancing', (await import('./routes/balancing.router.js')).default);
 
-
-app.get("/health", async (req, res, next) => {
+app.get('/health', async (req, res, next) => {
   try {
     req.logger.http(`${req.method} - ${req.url} - ${new Date().toLocaleTimeString()}`);
-    res.status(200).json({ health: "server up" })
+    res.status(200).json({ health: 'server up' });
   } catch (error) {
     next(error);
   }

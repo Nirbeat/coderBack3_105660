@@ -8,7 +8,8 @@
     "start": "node src/app.js --env prod",
     "dev": "node --watch src/app.js --env dev",
     "test": "mocha test/supertest.test.js --env test",
-    "pm2": "pm2 start src/app.js -i max -f"
+    "pm2": "pm2 start src/app.js -i max -f",
+    "dev:prueba": "node --watch src/pruebas.js --env dev"
   },
   "keywords": [],
   "author": "",
