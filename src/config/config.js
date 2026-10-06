@@ -4,5 +4,6 @@ config({ path: envPath });
 
 export const environment = {
     MONGO_URI: process.env.MONGO_URI,
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    MODE: process.env.MODE
 }
