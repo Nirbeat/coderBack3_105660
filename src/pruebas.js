@@ -5,7 +5,7 @@ const cpus = os.cpus();
 
 if (cluster.isPrimary) {
   console.log(`Master process PID: ${process.pid}`);
-  for (let i = 0; i < cpus.length; i++) {
+  for (const element of cpus) {
     cluster.fork();
   }
 } else {

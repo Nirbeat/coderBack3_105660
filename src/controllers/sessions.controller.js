@@ -30,7 +30,6 @@ const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) throw CustomError.createError({ name: "LOGIN_ERROR", message: "No se ha podido iniciar sesion", cause: "Faltan campos de autenticación", code: 5 })
-        // return res.status(400).send({ status: "error", error: "Incomplete values" });
         const user = await usersService.getUserByEmail(email);
         if (!user) return res.status(404).send({ status: "error", error: "User doesn't exist" });
         const isValidPassword = await passwordValidation(user, password);
@@ -71,7 +70,6 @@ export default {
     current,
     login,
     register,
-    current,
     unprotectedLogin,
     unprotectedCurrent
 }

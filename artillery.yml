@@ -1,3 +1,6 @@
+# Para ver el reporte online
+# artillery run <tu_archivo.yml> --record --key TU_API_KEY
+
 config:
   target: "http://localhost:3000"   # URL BASE A TESTEAR
   phases:                           # DEFINICION DE PRUEBAS

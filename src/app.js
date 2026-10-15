@@ -10,6 +10,7 @@ import sessionsRouter from './routes/sessions.router.js';
 import { addLogger } from './utils/index.js';
 
 const app = express();
+app.disable("x-powered-by");
 const PORT = environment.PORT;
 
 app.use(express.json());
@@ -24,11 +25,19 @@ app.use('/api/mocks', (await import('./routes/mocks.router.js')).default);
 app.use('/api/proxy', (await import('./routes/proxy.router.js')).default);
 app.use('/api/balancing', (await import('./routes/balancing.router.js')).default);
 
+app.get("/", async (req, res) => {
+  try {
+    throw new Error("falló el programa porque algo esta mal configurado")
+  } catch (error) {
+    res.status(500).json({ error: error.stack })
+  }
+})
+
 app.get('/health', async (req, res, next) => {
   try {
     req.logger.http(`${req.method} - ${req.url} - ${new Date().toLocaleTimeString()}`);
-  
-    res.status(200).json({ health: 'server up', version: '1.0.2'});
+
+    res.status(200).json({ health: 'server up', version: '1.0.2' });
   } catch (error) {
     next(error);
   }
