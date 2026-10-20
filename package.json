@@ -1,6 +1,6 @@
 {
   "name": "plantilladocumentacion",
-  "version": "1.0.0",
+  "version": "1.6.1",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -8,6 +8,7 @@
     "start": "node src/app.js --env prod",
     "dev": "node --watch src/app.js --env dev",
     "test": "mocha test/supertest.test.js --env test",
+    "test:unit": "mocha 'test/unit/**/*.test.js' --env test",
     "pm2": "pm2 start src/app.js -i max -f",
     "dev:prueba": "node --watch src/pruebas.js --env dev"
   },
@@ -31,8 +32,8 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "chai": "^6.2.2",
-    "mocha": "^12.0.2",
+    "chai": "^6.3.0",
+    "mocha": "^12.0.3",
     "supertest": "^7.2.2"
   }
 }
