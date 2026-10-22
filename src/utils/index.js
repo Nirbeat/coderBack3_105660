@@ -12,8 +12,7 @@ export const createHash = async (password) => {
 export const passwordValidation = async (user, password) => bcrypt.compare(password, user.password);
 
 export function addLogger(req, res, next) {
-    if (environment.MODE == "dev") req.logger = devLogger;
-    if (environment.MODE == "prod") req.logger = prodLogger;
+    req.logger = environment.MODE == "prod" ? prodLogger : devLogger;
     next();
 }
 

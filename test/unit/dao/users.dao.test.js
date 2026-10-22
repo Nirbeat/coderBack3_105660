@@ -1,8 +1,8 @@
 // import assert from 'node:assert';
 import { expect, assert } from 'chai';
-import UsersDAO from '../../src/dao/Users.dao.js';
+import UsersDAO from '../../../src/dao/Users.dao.js';
 
-import { connectTestDb, clearTestDb, disconnectTestDb } from '../helpers/db.js';
+import { connectTestDb, clearTestDb, disconnectTestDb } from '../../helpers/db.js';
 
 describe('Users DAO', () => {
   let usersDao;

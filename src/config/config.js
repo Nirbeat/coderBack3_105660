@@ -1,4 +1,4 @@
-import envPath from '../config/commander.js';
+import envPath from './commander.js';
 import { config } from 'dotenv';
 config({ path: envPath });
 

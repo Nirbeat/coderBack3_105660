@@ -19,7 +19,12 @@ export const connectTestDb = async () => {
 
 export const clearTestDb = async () => {
   const collections = Object.values(mongoose.connection.collections);
+  console.log(
+    'Clearing test database...',
+    collections.map((c) => c.name),
+  );
   for (const collection of collections) {
+    console.log(`Clearing collection: ${collection.name}`);
     await collection.deleteMany({});
   }
 };
