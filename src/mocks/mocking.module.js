@@ -9,6 +9,10 @@ const generateUniqueEmail = (firstName, lastName) => {
   return `${firstName.toLowerCase()}.${lastName.toLowerCase()}${emailSequence}@mail.com`;
 };
 
+/**
+ * Generate a random user
+ * @returns {User}
+ */
 export const generateUser = () => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();

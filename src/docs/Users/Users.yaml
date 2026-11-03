@@ -1,0 +1,122 @@
+paths:
+  /api/users:
+    get:
+      summary: "Obtiene todos los usuarios"
+      tags:
+        - Users
+      responses:
+        "200":
+          description: "Los usuarios fueron obtenidos exitosamente de la DB"
+  /api/users/{userId}:
+    get:
+      summary: "Obtiene un usuario por el ID especificado"
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: userId
+          description: "ID de MongoDB del usuario"
+          schema:
+            type: String
+      responses:
+        "200":
+          description: "El usuario se obtuvo correctamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "404":
+          description: "El usuario no existe"
+          content::
+            application/json:
+              schema:
+                $ref: "#components/schemas/UserNotFound"
+    put:
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: userId
+          description: "ID de MongoDB del usuario"
+          schema:
+            type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateUser"
+      responses:
+        "200":
+          description: "El usuario se obtuvo correctamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "404":
+          description: "El usuario no existe"
+          content::
+            application/json:
+              schema:
+                $ref: "#components/schemas/UserNotFound"
+    # ################################
+    # delete:
+    #   tags:
+    #     - Users
+
+components:
+  schemas:
+    User:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+        first_name:
+          type: String
+        last_name:
+          type: String
+        email:
+          type: String
+        role:
+          type: String
+        pets:
+          type: Array
+      example:
+        _id: "ObjectId('6ac4d51866d5c55f24563a3e')"
+        first_name: "Eduardo"
+        last_name: "Rojas"
+        email: "erojas@mail.com"
+        role: "user"
+        pets: []
+
+    UserNotFound:
+      type: Object
+      properties:
+        message: 
+          type: String
+        statusCode: 
+          type: Number
+      example:
+        message: "Falló la operación"
+        statusCode: 404
+
+  requestBodies:
+    updateUser:
+      type: Object
+      properties:
+        first_name:
+          type: String
+        last_name:
+          type: String
+        email:
+          type: String
+        role:
+          type: String
+        pets:
+          type: Array
+      example:
+        first_name: "Eduardo"
+        last_name: "Rojas"
+        email: "[EMAIL_ADDRESS]"
+        role: "user"
+        pets: []

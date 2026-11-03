@@ -1,0 +1,9 @@
+paths:
+  /api/pets:
+    get:
+      summary: "Obtiene todas las mascotas"
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: "Las mascotas fueron obtenidos exitosamente de la DB"

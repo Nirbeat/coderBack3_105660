@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import errorHandler from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import { environment } from './config/config.js';
+import swaggerUIExpress from "swagger-ui-express";
+import { swaggerSpec } from './config/swagger.js';
 import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
 import adoptionsRouter from './routes/adoption.router.js';
@@ -17,6 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(addLogger);
 
+app.use("/api/docs", swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerSpec));
 app.use('/api/users', usersRouter);
 app.use('/api/pets', petsRouter);
 app.use('/api/adoptions', adoptionsRouter);
