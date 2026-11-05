@@ -1,0 +1,78 @@
+# ==============================================================================
+# GITHUB ACTIONS — Pipeline de CI/CD
+# ==============================================================================
+# Este archivo se llama WORKFLOW. GitHub Actions lo lee automáticamente y lo
+# ejecuta en un servidor (runner) en la nube cada vez que ocurre el trigger.
+#
+# Flujo (CI/CD):
+#   1. CI (Continuous Integration): TEST — corre la suite en cada push/PR.
+#   2. CD (Continuous Delivery): BUILD + PUSH — si los tests pasan y el push
+#      es a la rama especificada, se puede configurar un nuevo job para construir
+#      la imagen en docker o en el mismo github (GHCR)
+#
+# Estructura:
+#   - name  : nombre visible del workflow (en la pestaña "Actions").
+#   - on    : eventos que disparan el pipeline (push/PR a la rama gitops).
+#   - jobs  : lista de trabajos (tareas). Pueden correr en paralelo o en secuencia.
+#   - steps : pasos concretos dentro de cada job (checkout, test, build, push).
+# ==============================================================================
+
+name: CI/CD
+
+# ------------------------------------------------------------------------------
+# "on" — DISPARADOR (cuándo se ejecuta el pipeline)
+# ------------------------------------------------------------------------------
+on:
+  # Se activa cuando hay un push a la rama especificada (adoptme en este caso).
+  # (En clase: cambiamos la rama para no ensuciar `main`; puedes volver a
+  #  poner `[main]` cuando quieras el flujo estandar.)
+  push:
+    branches: [adoptme]
+
+# ------------------------------------------------------------------------------
+# JOB: "test" — INTEGRACIÓN CONTINUA
+# ------------------------------------------------------------------------------
+jobs:
+  test:
+    # runs-on: tipo de máquina (runner) donde corre este job.
+    # ubuntu-latest = máquina Linux efímera provisionada por GitHub.
+    runs-on: ubuntu-latest
+
+    # services: levanta contenedores "de apoyo" para el job.
+    # Aquí levantamos un MongoDB TEMPORAL para los tests de integración,
+    # así los tests no dependen de tu Mongo local. Es como un docker compose
+    # efímero para la prueba.
+    services:
+      mongo:
+        image: mongo:7
+        # Exponemos el 27017 del contenedor Mongo al runner local.
+        ports:
+          - 27017:27017
+
+    # env: variables de entorno para este job.
+    # MONGO_URI_TEST apunta al Mongo del servicio (localhost en el runner).
+    # Sin esto, los tests de integración NO sabrían a qué BD conectarse.
+    env:
+      MONGO_URI_TEST: mongodb://localhost:27017/adoptme_test
+      PORT: 3000
+
+    steps:
+      # actions/checkout@v4: descarga el código del repositorio al runner.
+      # Sin este paso no hay código sobre el cual trabajar.
+      # Es el equivalente al COPY del Dockerfile
+      - uses: actions/checkout@v4
+
+      # actions/setup-node@v4: instala/usa una versión específica de Node.
+      # cache: npm habilita el caché de node_modules → builds más rápidos.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # Instala dependencias EXACTAS desde package-lock.json (reproducible).
+      - name: Instalar dependencias
+        run: npm ci
+
+      # Corremos los tests n el mismo comando que figura en nuestro package.json
+      - name: Tests
+        run: npm run start:test
