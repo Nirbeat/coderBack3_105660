@@ -69,10 +69,10 @@ jobs:
           node-version: 24
           cache: npm
 
-      # Instala dependencias EXACTAS desde package-lock.json (reproducible).
+      # Instala dependencias
       - name: Instalar dependencias
-        run: npm ci
+        run: npm install
 
       # Corremos los tests n el mismo comando que figura en nuestro package.json
       - name: Tests
-        run: npm run start:test
+        run: npm test
