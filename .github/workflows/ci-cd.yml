@@ -53,7 +53,7 @@ jobs:
     # MONGO_URI_TEST apunta al Mongo del servicio (localhost en el runner).
     # Sin esto, los tests de integración NO sabrían a qué BD conectarse.
     env:
-      MONGO_URI_TEST: mongodb://localhost:27017/adoptme_test
+      MONGO_URI: mongodb://localhost:27017/adoptme_test
       PORT: 3000
 
     steps:
